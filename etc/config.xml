@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <pagination>
+            <configuration>
+                <action_paths>{"0":{"path":"catalog_category_view"},"1":{"path":"catalogsearch_advanced_result"},"2":{"path":"catalogsearch_result_index"},"3":{"path":"frontend_cache_warmup"},"4":{"path":"brands_index_index"}}</action_paths>
+            </configuration>
+        </pagination>
+    </default>
+</config>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="magesuite" translate="label" sortOrder="300">
+            <label>MageSuite</label>
+        </tab>
+        <section id="pagination" translate="label" type="text" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Pagination</label>
+            <tab>magesuite</tab>
+            <resource>MageSuite_Pagination::config_pagination</resource>
+            <group id="configuration" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Configuration</label>
+                <field id="action_paths" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use input switcher</label>
+                    <frontend_model>MageSuite\Pagination\Block\System\Form\Field\Actions</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment><![CDATA[Specified actions will display additional input that can be filled with custom page number. Please provide them in format: {module}_{controller}_{action}.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
