@@ -7,6 +7,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
 
     const PAGER_CONFIGURATION_ACTIONS_PATH = 'pagination/configuration/action_paths';
     const AJAX_REVIEW_ACTION_PATH = 'review_product_listAjax';
+    const FULL_CATEGORY_ACTION_NAME = 'catalog_category_view';
 
     /**
      * @var \Magento\Framework\App\Request\Http
@@ -29,13 +30,38 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\Serialize\SerializerInterface $serializer,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
 
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
         $this->serializer = $serializer;
+    }
+
+    public function getPagerUrl($params = [])
+    {
+        if ($this->request->getFullActionName() != self::FULL_CATEGORY_ACTION_NAME) {
+            return parent::getPagerUrl($params);
+        }
+        
+        $urlParams = [];
+        $urlParams['_current'] = true;
+        $urlParams['_escape'] = false;
+        $urlParams['_use_rewrite'] = true;
+        $urlParams['_fragment'] = $this->getFragment();
+        $urlParams['_query'] = $params;
+
+        $paginationParam = $this->getPageVarName();
+
+        $url = $this->getUrl($this->getPath(), $urlParams);
+
+        if (!isset($params[$paginationParam]) || $params[$paginationParam] > 1) {
+            return $url;
+        }
+
+        $url = $this->removePaginationParamForFirstPageUrl($url);
+
+        return $url;
     }
 
     public function getUrlPattern()
@@ -79,5 +105,24 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         }
 
         return $actions;
+    }
+
+    private function removePaginationParamForFirstPageUrl($url)
+    {
+        $query = get_object_vars($this->request->getQuery());
+
+        $url = strtok($url, '?');
+
+        $paginationParam = $this->getPageVarName();
+
+        unset($query[$paginationParam]);
+
+        $query = http_build_query($query);
+
+        if (empty($query)) {
+            return $url;
+        }
+
+        return $url . '?' . $query;
     }
 }
