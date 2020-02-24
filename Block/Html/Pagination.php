@@ -43,7 +43,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         if ($this->request->getFullActionName() != self::FULL_CATEGORY_ACTION_NAME) {
             return parent::getPagerUrl($params);
         }
-        
+
         $urlParams = [];
         $urlParams['_current'] = true;
         $urlParams['_escape'] = false;
@@ -55,11 +55,9 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
 
         $url = $this->getUrl($this->getPath(), $urlParams);
 
-        if (!isset($params[$paginationParam]) || $params[$paginationParam] > 1) {
-            return $url;
+        if (isset($params[$paginationParam]) && $params[$paginationParam] == 1) {
+            $url = $this->removePaginationParamForFirstPageUrl($url);
         }
-
-        $url = $this->removePaginationParamForFirstPageUrl($url);
 
         return $url;
     }
