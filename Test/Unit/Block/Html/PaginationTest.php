@@ -19,7 +19,7 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
      */
     private $requestDouble;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->requestDouble = $this->getMockBuilder(\Magento\Framework\App\Request\Http::class)
             ->disableOriginalConstructor()
