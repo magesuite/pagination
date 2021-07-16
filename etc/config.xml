@@ -3,7 +3,23 @@
     <default>
         <pagination>
             <configuration>
-                <action_paths>{"0":{"path":"catalog_category_view"},"1":{"path":"catalogsearch_advanced_result"},"2":{"path":"catalogsearch_result_index"},"3":{"path":"frontend_cache_warmup"},"4":{"path":"brands_index_index"}}</action_paths>
+                <action_paths>
+                    <item1>
+                        <path>catalog_category_view</path>
+                    </item1>
+                    <item2>
+                        <path>catalogsearch_advanced_result</path>
+                    </item2>
+                    <item3>
+                        <path>catalogsearch_result_index</path>
+                    </item3>
+                    <item4>
+                        <path>frontend_cache_warmup</path>
+                    </item4>
+                    <item5>
+                        <path>brands_index_index</path>
+                    </item5>
+                </action_paths>
             </configuration>
         </pagination>
     </default>

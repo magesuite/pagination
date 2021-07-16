@@ -4,8 +4,6 @@ namespace MageSuite\Pagination\Block\Html;
 
 class Pagination extends \Magento\Theme\Block\Html\Pager
 {
-
-    const PAGER_CONFIGURATION_ACTIONS_PATH = 'pagination/configuration/action_paths';
     const AJAX_REVIEW_ACTION_PATH = 'review_product_listAjax';
     const FULL_CATEGORY_ACTION_NAME = 'catalog_category_view';
 
@@ -15,27 +13,19 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
     protected $request;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var \MageSuite\Pagination\Helper\Configuration
      */
-    protected $scopeConfig;
-
-    /**
-     * @var \Magento\Framework\Serialize\SerializerInterface
-     */
-    protected $serializer;
+    protected $configuration;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\Serialize\SerializerInterface $serializer,
+        \MageSuite\Pagination\Helper\Configuration $configuration,
         array $data = []
     ) {
         parent::__construct($context, $data);
-
         $this->request = $request;
-        $this->scopeConfig = $scopeConfig;
-        $this->serializer = $serializer;
+        $this->configuration = $configuration;
     }
 
     public function getPagerUrl($params = [])
@@ -95,9 +85,8 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
     private function getActionsWithInputSwitcher()
     {
         $actions = [];
+        $configArray = $this->configuration->getActionPaths();
 
-        $config = $this->scopeConfig->getValue(self::PAGER_CONFIGURATION_ACTIONS_PATH, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        $configArray = $this->serializer->unserialize($config);
         foreach ($configArray as $item) {
             $actions[] = $item['path'];
         }
@@ -108,13 +97,9 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
     private function removePaginationParamForFirstPageUrl($url)
     {
         $query = get_object_vars($this->request->getQuery());
-
         $url = strtok($url, '?');
-
         $paginationParam = $this->getPageVarName();
-
         unset($query[$paginationParam]);
-
         $query = http_build_query($query);
 
         if (empty($query)) {
