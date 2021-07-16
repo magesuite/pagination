@@ -19,7 +19,7 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
      */
     private $requestDouble;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->requestDouble = $this->getMockBuilder(\Magento\Framework\App\Request\Http::class)
             ->disableOriginalConstructor()
@@ -29,8 +29,7 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
         $this->block = new \MageSuite\Pagination\Block\Html\Pagination(
             $this->objectManager->get(\Magento\Framework\View\Element\Template\Context::class),
             $this->requestDouble,
-            $this->objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class),
-            $this->objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class),
+            $this->objectManager->get(\MageSuite\Pagination\Helper\Configuration::class),
             []
         );
     }
