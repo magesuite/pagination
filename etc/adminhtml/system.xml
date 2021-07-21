@@ -14,7 +14,7 @@
                     <label>Use input switcher</label>
                     <frontend_model>MageSuite\Pagination\Block\System\Form\Field\Actions</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment><![CDATA[Specified actions will display additional input that can be filled with custom page number. Please provide them in format: {module}_{controller}_{action}.]]></comment>
+                    <comment><![CDATA[Input switcher will be used for specified pages. Please provide them in format: {module}_{controller}_{action}.]]></comment>
                 </field>
             </group>
         </section>
