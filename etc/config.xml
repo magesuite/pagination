@@ -3,23 +3,7 @@
     <default>
         <pagination>
             <configuration>
-                <action_paths>
-                    <item1>
-                        <path>catalog_category_view</path>
-                    </item1>
-                    <item2>
-                        <path>catalogsearch_advanced_result</path>
-                    </item2>
-                    <item3>
-                        <path>catalogsearch_result_index</path>
-                    </item3>
-                    <item4>
-                        <path>frontend_cache_warmup</path>
-                    </item4>
-                    <item5>
-                        <path>brands_index_index</path>
-                    </item5>
-                </action_paths>
+                <action_paths>{"_1633497114605_605":{"path":"catalog_category_view"},"_1633497116213_213":{"path":"catalogsearch_advanced_result"},"_1633497117041_41":{"path":"catalogsearch_result_index"},"_1633497117552_552":{"path":"frontend_cache_warmup"},"_1633497127117_117":{"path":"brands_index_index"}}</action_paths>
             </configuration>
         </pagination>
     </default>
