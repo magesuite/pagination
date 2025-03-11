@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MageSuite\Pagination\Block\System\Form\Field;
 
 class Actions extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
 {
-    protected function _prepareToRender()
+    protected function _prepareToRender(): void
     {
         $this->addColumn('path', [
             'label' => __('Expression'),
