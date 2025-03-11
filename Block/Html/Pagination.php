@@ -1,21 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MageSuite\Pagination\Block\Html;
 
 class Pagination extends \Magento\Theme\Block\Html\Pager
 {
-    const AJAX_REVIEW_ACTION_PATH = 'review_product_listAjax';
-    const FULL_CATEGORY_ACTION_NAME = 'catalog_category_view';
+    protected const AJAX_REVIEW_ACTION_PATH = 'review_product_listAjax';
 
-    /**
-     * @var \Magento\Framework\App\Request\Http
-     */
-    protected $request;
+    protected const FULL_CATEGORY_ACTION_NAME = 'catalog_category_view';
 
-    /**
-     * @var \MageSuite\Pagination\Helper\Configuration
-     */
-    protected $configuration;
+    protected const FLAG_USE_AJAX_REVIEW_URL = 'use_ajax_review_url';
+
+    protected \Magento\Framework\App\RequestInterface $request;
+
+    protected \MageSuite\Pagination\Helper\Configuration $configuration;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -28,8 +27,15 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         $this->configuration = $configuration;
     }
 
-    public function getPagerUrl($params = [])
+    public function getPagerUrl($params = []): string
     {
+        if ($this->getData(self::FLAG_USE_AJAX_REVIEW_URL)) {
+            return $this->getUrl('review/product/listAjax', [
+                'id' => (int) $this->getRequest()->getParam('id'),
+                '_query' => $params
+            ]);
+        }
+
         if ($this->request->getFullActionName() != self::FULL_CATEGORY_ACTION_NAME) {
             return parent::getPagerUrl($params);
         }
@@ -40,11 +46,9 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         $urlParams['_use_rewrite'] = true;
         $urlParams['_fragment'] = $this->getFragment();
         $urlParams['_query'] = $params;
-
-        $paginationParam = $this->getPageVarName();
-
         $url = $this->getUrl($this->getPath(), $urlParams);
 
+        $paginationParam = $this->getPageVarName();
         if (isset($params[$paginationParam]) && $params[$paginationParam] == 1) {
             $url = $this->removePaginationParamForFirstPageUrl($url);
         }
@@ -52,7 +56,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         return $url;
     }
 
-    public function getUrlPattern()
+    public function getUrlPattern(): string
     {
         $pattern = $this->getPagerUrl([$this->getPageVarName() => 'page']);
         $pattern = str_replace('p=page', 'p=[page]', $pattern);
@@ -60,7 +64,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         return $this->escapeHtml($pattern);
     }
 
-    public function hasInputSwitcher()
+    public function hasInputSwitcher(): bool
     {
         $actions = $this->getActionsWithInputSwitcher();
         $requestName = $this->request->getFullActionName();
@@ -68,7 +72,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         return in_array($requestName, $actions);
     }
 
-    public function isShowPerPage()
+    public function isShowPerPage(): bool
     {
         if ($this->isAjaxReviewAction()) {
             return false;
@@ -77,12 +81,12 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         return parent::isShowPerPage();
     }
 
-    private function isAjaxReviewAction()
+    private function isAjaxReviewAction(): bool
     {
-        return $this->request->getFullActionName() === self::AJAX_REVIEW_ACTION_PATH;
+        return $this->request->getFullActionName() === self::AJAX_REVIEW_ACTION_PATH || $this->getData(self::FLAG_USE_AJAX_REVIEW_URL);
     }
 
-    private function getActionsWithInputSwitcher()
+    private function getActionsWithInputSwitcher(): array
     {
         $actions = [];
         $configArray = $this->configuration->getActionPaths();
@@ -94,7 +98,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
         return $actions;
     }
 
-    private function removePaginationParamForFirstPageUrl($url)
+    private function removePaginationParamForFirstPageUrl(string $url): string
     {
         $query = get_object_vars($this->request->getQuery());
         $url = strtok($url, '?');
