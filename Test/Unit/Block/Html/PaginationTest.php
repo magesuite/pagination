@@ -1,23 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MageSuite\Pagination\Test\Unit\Block\Html;
 
 class PaginationTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \Magento\TestFramework\ObjectManager
-     */
-    private $objectManager;
+    protected ?\Magento\TestFramework\ObjectManager $objectManager;
+    protected ?\MageSuite\Pagination\Block\Html\Pagination $block;
 
     /**
-     * @var \MageSuite\Pagination\Block\Html\Pagination
+     * @var \Magento\Framework\App\RequestInterface|
      */
-    private $block;
-
-    /**
-     * @var \Magento\Framework\App\RequestInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $requestDouble;
+    protected ?\PHPUnit\Framework\MockObject\MockObject $requestDouble;
 
     protected function setUp(): void
     {
@@ -34,7 +29,8 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testItReturnsCorrectPattern() {
+    public function testItReturnsCorrectPattern(): void
+    {
         $expect = 'http://localhost/index.php/?p=[page]';
         $result = $this->block->getUrlPattern();
 
@@ -44,17 +40,19 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getActions
      */
-    public function testItReturnsCorrectSwitcher($fullActionName, $expectedResult){
+    public function testItReturnsCorrectSwitcher(string $fullActionName, bool $expectedResult): void
+    {
         $this->requestDouble->method('getFullActionName')->willReturn($fullActionName);
         $this->assertEquals($expectedResult, $this->block->hasInputSwitcher());
     }
 
-    public function testIsShowPerPage(){
+    public function testIsShowPerPage(): void
+    {
         $this->requestDouble->method('getFullActionName')->willReturn('review_product_listAjax');
         $this->assertFalse($this->block->isShowPerPage());
     }
 
-    public static function getActions()
+    public static function getActions(): array
     {
         return [
             ['catalog_category_view', true],
