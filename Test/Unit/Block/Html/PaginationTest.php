@@ -37,9 +37,7 @@ class PaginationTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expect, $result);
     }
 
-    /**
-     * @dataProvider getActions
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getActions')]
     public function testItReturnsCorrectSwitcher(string $fullActionName, bool $expectedResult): void
     {
         $this->requestDouble->method('getFullActionName')->willReturn($fullActionName);
