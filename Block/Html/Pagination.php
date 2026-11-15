@@ -100,7 +100,7 @@ class Pagination extends \Magento\Theme\Block\Html\Pager
 
     private function removePaginationParamForFirstPageUrl(string $url): string
     {
-        $query = get_object_vars($this->request->getQuery());
+        $query = $this->request->getQuery()->toArray();
         $url = strtok($url, '?');
         $paginationParam = $this->getPageVarName();
         unset($query[$paginationParam]);
